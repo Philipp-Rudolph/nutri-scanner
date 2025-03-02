@@ -12,9 +12,8 @@
     <!-- Modal for displaying scanned product data -->
     <div v-if="showModal" class="modal">
       <div class="modal-content">
-        <h3>Product Information</h3>
-        <ProductDashboard :product="formattedProductData" />
-        <button @click="showModal = false">Close</button>
+        <button @click="showModal = false" class="close-button">Close</button>
+        <ProductDashboard :product="formattedProductData" :data="productData" />
       </div>
     </div>
   </div>
@@ -35,15 +34,31 @@ export default {
   },
   computed: {
     formattedProductData() {
-      // Make an array of data to return in the modal
-      const returnData = {
-        name: this.productData?.product_name || 'No data available', // fallback to string if no data
-        ingredients: this.productData?.ingredients_text || 'No data available', // fallback to string
-        nutriscore: this.productData?.nutriscore_data || 'No data available', // fallback to string
-        image: this.productData?.image_url || 'No data available', // fallback to string
-      }
-
-      return returnData // Always return an object, even if data is missing
+      return this.productData
+        ? {
+            name: this.productData.product_name,
+            ingredients: this.productData.ingredients_text,
+            image: this.productData.image_url,
+            nutriscore: this.productData.nutriscore_data,
+            novaScore: this.productData.nova_group, // Add NOVA score
+            additives: this.productData.additives_tags.map((tag) => tag.replace('en:', '')), // List additives
+            allergens: this.productData.allergens ? this.productData.allergens.split(',') : [], // Allergens
+            dietCompatibility: {
+              vegan: this.productData.labels_tags.includes('en:vegan'),
+              vegetarian: this.productData.labels_tags.includes('en:vegetarian'),
+              halal: this.productData.labels_tags.includes('en:halal'),
+              kosher: this.productData.labels_tags.includes('en:kosher'),
+            },
+            nutrition: {
+              energy: this.productData.nutriments['energy-kcal_100g'],
+              fat: this.productData.nutriments.fat_100g,
+              sugar: this.productData.nutriments.sugars_100g,
+              fiber: this.productData.nutriments.fiber_100g,
+              protein: this.productData.nutriments.proteins_100g,
+              salt: this.productData.nutriments.salt_100g,
+            },
+          }
+        : 'No data available'
     },
   },
   methods: {
@@ -145,5 +160,22 @@ pre {
   position: absolute;
   top: 50px;
   left: 70%;
+}
+
+.close-button {
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #333;
+  border: 1px solid #333;
+  background-color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  transition: all 0.3s;
+
+  &:hover {
+    background-color: #333;
+    color: #fff;
+  }
 }
 </style>

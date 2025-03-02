@@ -11,13 +11,3 @@ export default {
   components: { BarcodeScanner },
 }
 </script>
-
-<style>
-/* make mobile */
-.home {
-  max-width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-</style>
