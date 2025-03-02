@@ -13,7 +13,10 @@
     <div v-if="showModal" class="modal">
       <div class="modal-content">
         <h3>Product Information</h3>
-        <pre>{{ formattedProductData }}</pre>
+        {{ formattedProductData }}
+        <div v-if="productData">
+          <ProductDashboard :product="formattedProductData" />
+        </div>
         <button @click="showModal = false">Close</button>
       </div>
     </div>
@@ -21,14 +24,16 @@
 </template>
 
 <script lang="ts">
+import ProductDashboard from './ProductDashboard.vue'
 import Quagga from '@ericblade/quagga2' // Ensure you're using the maintained fork
 
 export default {
+  components: { ProductDashboard },
   data() {
     return {
       scannedCode: null as string | null,
       productData: null as Record<string, unknown> | null, // Store full product response
-      showModal: false, // Controls modal visibility
+      showModal: false as boolean, // Controls modal visibility
     }
   },
   computed: {
