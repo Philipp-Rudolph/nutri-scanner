@@ -13,10 +13,7 @@
     <div v-if="showModal" class="modal">
       <div class="modal-content">
         <h3>Product Information</h3>
-        {{ formattedProductData }}
-        <div v-if="productData">
-          <ProductDashboard :product="formattedProductData" />
-        </div>
+        <ProductDashboard :product="formattedProductData" />
         <button @click="showModal = false">Close</button>
       </div>
     </div>
@@ -33,21 +30,20 @@ export default {
     return {
       scannedCode: null as string | null,
       productData: null as Record<string, unknown> | null, // Store full product response
-      showModal: false as boolean, // Controls modal visibility
+      showModal: false, // Controls modal visibility
     }
   },
   computed: {
     formattedProductData() {
-      // make an array of data to return in the modal
-      // containing data.ingredients_text, data.nutriscore_data, data.product_name, data.image_url
+      // Make an array of data to return in the modal
       const returnData = {
-        name: this.productData?.product_name,
-        ingredients: this.productData?.ingredients_text,
-        nutriscore: this.productData?.nutriscore_data,
-        image: this.productData?.image_url,
+        name: this.productData?.product_name || 'No data available', // fallback to string if no data
+        ingredients: this.productData?.ingredients_text || 'No data available', // fallback to string
+        nutriscore: this.productData?.nutriscore_data || 'No data available', // fallback to string
+        image: this.productData?.image_url || 'No data available', // fallback to string
       }
 
-      return this.productData ? JSON.stringify(returnData, null, 2) : 'No data available'
+      return returnData // Always return an object, even if data is missing
     },
   },
   methods: {
