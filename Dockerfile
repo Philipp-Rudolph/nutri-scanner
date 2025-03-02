@@ -1,6 +1,5 @@
 # Step 1: Use official Node.js image to build the App
 FROM node:18 as build 
-RUN npm install -g npm@latest
 
 # Step 2: Set the working directory
 WORKDIR /app
@@ -24,7 +23,7 @@ FROM nginx:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
 
 # Step 9: Expose the port
-EXPOSE 5050
+EXPOSE 80
 
 # Step 10: Start the Nginx server
 CMD ["nginx", "-g", "daemon off;"]
