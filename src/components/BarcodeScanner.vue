@@ -3,9 +3,19 @@
     <h2>Scan a Barcode</h2>
     <div id="scanner-container"></div>
     <p v-if="scannedCode">Scanned Code: {{ scannedCode }}</p>
+
     <div class="buttons">
       <button @click="startScanner">Start Scanner</button>
       <button @click="stopScanner">Stop Scanner</button>
+    </div>
+
+    <!-- Modal for displaying scanned product data -->
+    <div v-if="showModal" class="modal">
+      <div class="modal-content">
+        <h3>Product Information</h3>
+        <pre>{{ formattedProductData }}</pre>
+        <button @click="showModal = false">Close</button>
+      </div>
     </div>
   </div>
 </template>
@@ -17,7 +27,14 @@ export default {
   data() {
     return {
       scannedCode: null as string | null,
+      productData: null as Record<string, unknown> | null, // Store full product response
+      showModal: false, // Controls modal visibility
     }
+  },
+  computed: {
+    formattedProductData() {
+      return this.productData ? JSON.stringify(this.productData, null, 2) : 'No data available'
+    },
   },
   methods: {
     startScanner() {
@@ -30,7 +47,7 @@ export default {
             constraints: {
               facingMode: 'environment', // Use the back camera
             },
-            target: document.querySelector('#scanner-container') || undefined, // Container for the camera feed
+            target: document.querySelector('#scanner-container') || undefined, // Camera feed container
           },
           decoder: {
             readers: ['ean_reader', 'upc_reader', 'code_128_reader'], // Supported barcode formats
@@ -51,16 +68,22 @@ export default {
         this.stopScanner()
 
         // Fetch product data
-        const response = await fetch(
-          `https://world.openfoodfacts.org/api/v2/product/${this.scannedCode}.json`,
-        )
-        const data = await response.json()
-        console.log('Product Info:', data)
-        // show product info in a modal
-        if (data.product) {
-          alert(`Product: ${data.product.product_name}, data: ${data}`)
-        } else {
-          alert('Product not found')
+        try {
+          const response = await fetch(
+            `https://world.openfoodfacts.org/api/v2/product/${this.scannedCode}.json`,
+          )
+          const data = await response.json()
+          console.log('Product Info:', data)
+
+          if (data.product) {
+            this.productData = data.product
+            this.showModal = true // Show modal with product data
+          } else {
+            alert('Product not found')
+          }
+        } catch (error) {
+          console.error('Error fetching product data:', error)
+          alert('Failed to fetch product data')
         }
       })
     },
@@ -73,7 +96,35 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+/* Basic modal styling */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-height: 80%;
+  overflow-y: auto;
+}
+
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  text-align: left;
+}
+
 #scanner-container {
   width: 100%;
   height: 80vh;
