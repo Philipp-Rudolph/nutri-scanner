@@ -127,17 +127,21 @@ export default {
 <style scoped>
 /* General Styling */
 .dashboard {
+  background: var(--color-background);
+  color: black;
   width: 100%;
   margin: auto;
   padding: 20px;
   border-radius: 10px;
-  background: #fff;
   display: flex;
   flex-direction: column;
 }
 
-h2 {
+h2,
+h3,
+.final-score {
   margin: 0 auto;
+  color: var(--color-text);
 }
 
 .product-image {
@@ -244,7 +248,6 @@ h2 {
   font-weight: bold;
   margin-top: 20px;
   text-align: center;
-  color: #333;
 }
 
 /* Learn More Section */

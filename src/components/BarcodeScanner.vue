@@ -126,7 +126,6 @@ export default {
 }
 
 .modal-content {
-  background: white;
   padding: 20px;
   border-radius: 8px;
   width: 90%;
