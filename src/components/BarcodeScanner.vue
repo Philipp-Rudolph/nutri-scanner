@@ -56,6 +56,12 @@ export default {
         )
         const data = await response.json()
         console.log('Product Info:', data)
+        // show product info in a modal
+        if (data.product) {
+          alert(`Product: ${data.product.product_name}`)
+        } else {
+          alert('Product not found')
+        }
       })
     },
 
