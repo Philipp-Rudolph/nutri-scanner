@@ -33,7 +33,16 @@ export default {
   },
   computed: {
     formattedProductData() {
-      return this.productData ? JSON.stringify(this.productData, null, 2) : 'No data available'
+      // make an array of data to return in the modal
+      // containing data.ingredients_text, data.nutriscore_data, data.product_name, data.image_url
+      const returnData = {
+        name: this.productData?.product_name,
+        ingredients: this.productData?.ingredients_text,
+        nutriscore: this.productData?.nutriscore_data,
+        image: this.productData?.image_url,
+      }
+
+      return this.productData ? JSON.stringify(returnData, null, 2) : 'No data available'
     },
   },
   methods: {
