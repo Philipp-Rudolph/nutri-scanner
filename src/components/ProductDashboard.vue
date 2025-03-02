@@ -93,7 +93,7 @@ export default {
       required: true,
     },
     data: {
-      type: Object,
+      type: Object as () => Record<string, unknown> | null,
       required: true,
     },
   },

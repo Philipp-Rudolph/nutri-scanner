@@ -13,7 +13,7 @@
     <div v-if="showModal" class="modal">
       <div class="modal-content">
         <button @click="showModal = false" class="close-button">Close</button>
-        <ProductDashboard :product="formattedProductData" :data="productData" />
+        <ProductDashboard :product="formattedProductData" :data="productData || {}" />
       </div>
     </div>
   </div>
@@ -34,31 +34,21 @@ export default {
   },
   computed: {
     formattedProductData() {
-      return this.productData
-        ? {
-            name: this.productData.product_name,
-            ingredients: this.productData.ingredients_text,
-            image: this.productData.image_url,
-            nutriscore: this.productData.nutriscore_data,
-            novaScore: this.productData.nova_group, // Add NOVA score
-            additives: this.productData.additives_tags.map((tag) => tag.replace('en:', '')), // List additives
-            allergens: this.productData.allergens ? this.productData.allergens.split(',') : [], // Allergens
-            dietCompatibility: {
-              vegan: this.productData.labels_tags.includes('en:vegan'),
-              vegetarian: this.productData.labels_tags.includes('en:vegetarian'),
-              halal: this.productData.labels_tags.includes('en:halal'),
-              kosher: this.productData.labels_tags.includes('en:kosher'),
-            },
-            nutrition: {
-              energy: this.productData.nutriments['energy-kcal_100g'],
-              fat: this.productData.nutriments.fat_100g,
-              sugar: this.productData.nutriments.sugars_100g,
-              fiber: this.productData.nutriments.fiber_100g,
-              protein: this.productData.nutriments.proteins_100g,
-              salt: this.productData.nutriments.salt_100g,
-            },
-          }
-        : 'No data available'
+      if (!this.productData) {
+        return {
+          name: 'No data available',
+          ingredients: 'No data available',
+          nutriscore: {},
+          image: '',
+        }
+      }
+
+      return {
+        name: this.productData.product_name ?? 'No name available',
+        ingredients: this.productData.ingredients_text ?? 'No ingredients available',
+        nutriscore: this.productData.nutriscore_data ?? {},
+        image: this.productData.image_url ?? '',
+      }
     },
   },
   methods: {
