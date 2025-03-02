@@ -58,7 +58,7 @@ export default {
         console.log('Product Info:', data)
         // show product info in a modal
         if (data.product) {
-          alert(`Product: ${data.product.product_name}`)
+          alert(`Product: ${data.product.product_name}, data: ${data}`)
         } else {
           alert('Product not found')
         }
@@ -76,7 +76,7 @@ export default {
 <style scoped>
 #scanner-container {
   width: 100%;
-  height: 300px;
+  height: 80vh;
   border: 2px solid black;
 }
 
