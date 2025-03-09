@@ -30,65 +30,65 @@
         Nutri-Score:
         <span :class="nutriScoreClass">{{ product.nutriscore.grade.toUpperCase() }}</span>
       </h3>
+    </div>
 
-      <div class="nutriscore-table-container">
-        <table class="nutriscore-table">
-          <thead>
-            <tr>
-              <th>Komponente</th>
-              <th>Wert</th>
-              <th>Auswirkung</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="neg in product.nutriscore.components.negative"
-              :key="neg.id"
-              class="negative-row"
-            >
-              <td>{{ neg.id }}</td>
-              <td>{{ neg.value }}{{ neg.unit }}</td>
-              <td class="negative">-{{ neg.points }} Punkte</td>
-            </tr>
-            <tr
-              v-for="pos in product.nutriscore.components.positive"
-              :key="pos.id"
-              class="positive-row"
-            >
-              <td>{{ pos.id }}</td>
-              <td>{{ pos.value !== null ? pos.value : 'N/A' }}{{ pos.unit }}</td>
-              <td class="positive">+{{ pos.points }} Punkte</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="nutriscore-table-container">
+      <table class="nutriscore-table">
+        <thead>
+          <tr>
+            <th>Komponente</th>
+            <th>Wert</th>
+            <th>Auswirkung</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="neg in product.nutriscore.components.negative"
+            :key="neg.id"
+            class="negative-row"
+          >
+            <td>{{ neg.id }}</td>
+            <td>{{ neg.value }}{{ neg.unit }}</td>
+            <td class="negative">-{{ neg.points }} Punkte</td>
+          </tr>
+          <tr
+            v-for="pos in product.nutriscore.components.positive"
+            :key="pos.id"
+            class="positive-row"
+          >
+            <td>{{ pos.id }}</td>
+            <td>{{ pos.value !== null ? pos.value : 'N/A' }}{{ pos.unit }}</td>
+            <td class="positive">+{{ pos.points }} Punkte</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-      <p class="final-score">
-        <strong>Endgültige Punktzahl:</strong> {{ product.nutriscore.score }}
-      </p>
-
-      <!-- Mehr erfahren -->
-      <div class="learn-more">
-        <h3 class="component-title" @click="isExpanded = !isExpanded">
-          Wie wird der Nutri-Score berechnet?
-        </h3>
-        <transition name="fade">
-          <div v-if="isExpanded" class="explanation">
-            <p>
-              Die Punktzahl wird anhand negativer und positiver Faktoren berechnet:
-              <br />
-              <strong>Negativ:</strong> Zucker, gesättigte Fettsäuren, Salz, Kalorien (höher ist
-              schlechter).
-              <br />
-              <strong>Positiv:</strong> Ballaststoffe, Proteine, Obst & Gemüse (höher ist besser).
-              <br />
-              Eine endgültige Punktzahl wird berechnet, und der Buchstabe (A-E) wird entsprechend
-              zugewiesen.
-            </p>
-            <pre><code>{{ JSON.stringify(data, null, 2) }}</code></pre>
-          </div>
-        </transition>
-      </div>
+    <p class="final-score"><strong>Endgültige Punktzahl:</strong> {{ product.nutriscore.score }}</p>
+    <!-- Mehr erfahren -->
+    <div class="learn-more">
+      <h3 class="component-title" @click="isExpanded = !isExpanded">
+        Wie wird der Nutri-Score berechnet?
+      </h3>
+      <transition name="fade">
+        <div v-if="isExpanded" class="explanation">
+          <p>
+            Die Punktzahl wird anhand negativer und positiver Faktoren berechnet:
+            <br />
+            <strong>Negativ:</strong> Zucker, gesättigte Fettsäuren, Salz, Kalorien (höher ist
+            schlechter).
+            <br />
+            <strong>Positiv:</strong> Ballaststoffe, Proteine, Obst & Gemüse (höher ist besser).
+            <br />
+            Eine endgültige Punktzahl wird berechnet, und der Buchstabe (A-E) wird entsprechend
+            zugewiesen.
+          </p>
+          <h3 @click="showRawData = !showRawData">
+            JSON-Daten {{ showRawData ? 'einklappen' : 'anzeigen' }}
+          </h3>
+          <pre v-if="showRawData"><code>{{ JSON.stringify(data, null, 2) }}</code></pre>
+        </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -108,6 +108,7 @@ export default {
   data() {
     return {
       isExpanded: false,
+      showRawData: false,
     }
   },
   computed: {
@@ -145,6 +146,12 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  text-align: justify;
+
+  & > * {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+  }
 }
 
 h2,
@@ -276,6 +283,7 @@ h3 {
 
 .explanation {
   & pre {
+    margin-top: 2rem;
     white-space: pre-wrap;
     word-wrap: break-word;
     text-align: left;

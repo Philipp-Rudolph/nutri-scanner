@@ -17,14 +17,6 @@
       <button @click="stopScanner" class="secondary-button">Stop Scanner</button>
     </div>
 
-    <!-- Modal for scanned product data -->
-    <!-- <div v-if="showModal" class="modal">
-      <div class="modal-content">
-        <button @click="showModal = false" class="close-button">×</button>
-        <ProductDashboard :product="formattedProductData" :data="productData || {}" />
-      </div>
-    </div> -->
-
     <div v-if="showModal" class="modal" :class="{ show: showModal }">
       <div class="modal-content">
         <button @click="showModal = false" class="close-button">×</button>
@@ -45,6 +37,7 @@ export default {
       scannedCode: null as string | null,
       productData: null as Record<string, unknown> | null,
       showModal: false,
+      scanning: false,
     }
   },
   computed: {
@@ -66,6 +59,8 @@ export default {
   },
   methods: {
     startScanner() {
+      if (this.scanning) return
+      this.scanning = true
       console.log('Starting scanner...')
       Quagga.init(
         {
@@ -96,17 +91,21 @@ export default {
 
       Quagga.onDetected(async (result) => {
         this.scannedCode = result.codeResult.code
-        this.stopScanner()
         try {
           const response = await fetch(
             `https://world.openfoodfacts.org/api/v2/product/${this.scannedCode}.json`,
           )
+          if (!response.ok) {
+            console.warn('No valid response, adjusting camera angle...')
+            return
+          }
           const data = await response.json()
           console.log('Product Info:', data)
 
           if (data.product) {
             this.productData = data.product
             this.showModal = true
+            this.stopScanner()
           } else {
             alert('Product not found')
           }
@@ -119,6 +118,7 @@ export default {
     stopScanner() {
       console.log('Stopping scanner...')
       Quagga.stop()
+      this.scanning = false
     },
   },
 }
