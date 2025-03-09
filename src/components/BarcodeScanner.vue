@@ -18,7 +18,14 @@
     </div>
 
     <!-- Modal for scanned product data -->
-    <div v-if="showModal" class="modal">
+    <!-- <div v-if="showModal" class="modal">
+      <div class="modal-content">
+        <button @click="showModal = false" class="close-button">×</button>
+        <ProductDashboard :product="formattedProductData" :data="productData || {}" />
+      </div>
+    </div> -->
+
+    <div v-if="showModal" class="modal" :class="{ show: showModal }">
       <div class="modal-content">
         <button @click="showModal = false" class="close-button">×</button>
         <ProductDashboard :product="formattedProductData" :data="productData || {}" />
@@ -130,6 +137,16 @@ export default {
   width: 100%;
 }
 
+.barcode-scanner {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background: #000; /* Full dark background */
+  color: #fff;
+}
+
 /* Scanner Container */
 .scanner-wrapper {
   width: 100%;
@@ -139,9 +156,9 @@ export default {
 
 #scanner-container {
   width: 100%;
-  height: 300px;
+  height: 70vh;
   background: #000;
-  border-radius: 12px;
+  border-radius: 0;
   overflow: hidden;
   position: relative;
   display: flex;
@@ -218,8 +235,8 @@ button {
 /* Modal */
 .modal {
   position: fixed;
-  top: 0;
   left: 0;
+  bottom: -100%;
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
@@ -227,6 +244,11 @@ button {
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  transition: bottom 0.3s ease-in-out;
+}
+
+.modal.show {
+  bottom: 0; /* Slide up */
 }
 
 .modal-content {
