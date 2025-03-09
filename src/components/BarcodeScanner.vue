@@ -1,7 +1,10 @@
 <template>
-  <div>
+  <div class="barcode-scanner">
     <h2>Scan a Barcode</h2>
-    <div id="scanner-container"></div>
+    <div id="scanner-container">
+      <!-- Camera feed will be displayed here -->
+      <div class="scanner-container--crosshair"></div>
+    </div>
     <p v-if="scannedCode">Scanned Code: {{ scannedCode }}</p>
 
     <div class="buttons">
@@ -112,6 +115,18 @@ export default {
 </script>
 
 <style>
+.barcode-scanner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+
+  & h2 {
+    color: var(--color-text);
+  }
+}
 /* Basic modal styling */
 .modal {
   position: fixed;
@@ -143,12 +158,46 @@ pre {
   width: 100%;
   height: 80vh;
   border: 2px solid black;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & video {
+    width: 100%;
+    height: 100%;
+  }
+
+  & canvas {
+    display: none;
+  }
+
+  & .scanner-container--crosshair {
+    position: absolute;
+    width: 50%;
+    height: 30%;
+    border: 2px dashed red;
+    z-index: 999;
+  }
 }
 
 .buttons {
   position: absolute;
   top: 50px;
   left: 70%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  & button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    border: none;
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+  }
 }
 
 .close-button {

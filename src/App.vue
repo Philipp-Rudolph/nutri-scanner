@@ -11,3 +11,16 @@ export default {
   components: { BarcodeScanner },
 }
 </script>
+
+<style>
+.home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+  background: var(--color-background);
+  color: white;
+}
+</style>

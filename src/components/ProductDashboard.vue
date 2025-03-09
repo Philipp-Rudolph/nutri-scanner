@@ -4,7 +4,7 @@
     <h2>{{ product.name }}</h2>
 
     <!-- Nutri-Score Explanation Section -->
-    <div class="nutriscore-explanation explanation">
+    <div class="nutriscore-explanation">
       <h3>What is the Nutri-Score?</h3>
       <p>
         The Nutri-Score is a food rating system that classifies products from
@@ -16,11 +16,11 @@
 
       <!-- Visual Nutri-Score Scale -->
       <div class="nutriscore-scale">
-        <span class="score-a">A</span>
-        <span class="score-b">B</span>
-        <span class="score-c">C</span>
-        <span class="score-d">D</span>
-        <span class="score-e">E</span>
+        <span class="score score-a">A</span>
+        <span class="score score-b">B</span>
+        <span class="score score-c">C</span>
+        <span class="score score-d">D</span>
+        <span class="score score-e">E</span>
       </div>
     </div>
 
@@ -34,7 +34,7 @@
       <table class="nutriscore-table">
         <thead>
           <tr>
-            <th class="t-a-l">Component</th>
+            <th>Component</th>
             <th>Value</th>
             <th>Impact</th>
           </tr>
@@ -45,7 +45,7 @@
             :key="neg.id"
             class="negative-row"
           >
-            <td class="t-a-l">{{ neg.id }}</td>
+            <td>{{ neg.id }}</td>
             <td>{{ neg.value }}{{ neg.unit }}</td>
             <td class="negative">-{{ neg.points }} points</td>
           </tr>
@@ -54,7 +54,7 @@
             :key="pos.id"
             class="positive-row"
           >
-            <td class="t-a-l">{{ pos.id }}</td>
+            <td>{{ pos.id }}</td>
             <td>{{ pos.value !== null ? pos.value : 'N/A' }}{{ pos.unit }}</td>
             <td class="positive">+{{ pos.points }} points</td>
           </tr>
@@ -65,21 +65,23 @@
 
       <!-- Learn More Section -->
       <div class="learn-more">
-        <h3 class="component-title pointer" @click="isExpanded = !isExpanded">
+        <h3 class="component-title" @click="isExpanded = !isExpanded">
           How is Nutri-Score Calculated?
         </h3>
-        <div v-if="isExpanded" class="explanation">
-          <p>
-            The score is calculated based on negative and positive factors:
-            <br />
-            <strong>Negative:</strong> Sugars, Saturated Fat, Salt, Calories (higher is worse).
-            <br />
-            <strong>Positive:</strong> Fiber, Protein, Fruits & Vegetables (higher is better).
-            <br />
-            A final score is computed, and the letter grade (A-E) is assigned accordingly.
-          </p>
-          <pre><code><h2>Raw Data:</h2>{{ JSON.stringify(data, null, 2) }}</code></pre>
-        </div>
+        <transition name="fade">
+          <div v-if="isExpanded" class="explanation">
+            <p>
+              The score is calculated based on negative and positive factors:
+              <br />
+              <strong>Negative:</strong> Sugars, Saturated Fat, Salt, Calories (higher is worse).
+              <br />
+              <strong>Positive:</strong> Fiber, Protein, Fruits & Vegetables (higher is better).
+              <br />
+              A final score is computed, and the letter grade (A-E) is assigned accordingly.
+            </p>
+            <pre><code>{{ JSON.stringify(data, null, 2) }}</code></pre>
+          </div>
+        </transition>
       </div>
     </div>
   </div>
@@ -104,7 +106,6 @@ export default {
   },
   computed: {
     nutriScoreClass() {
-      console.log(this.product.nutriscore.grade)
       switch (this.product.nutriscore.grade.toUpperCase()) {
         case 'A':
           return 'score score-a'
@@ -127,113 +128,98 @@ export default {
 <style scoped>
 /* General Styling */
 .dashboard {
-  background: var(--color-background);
-  color: black;
+  background: #f9f9f9;
+  color: #333;
   width: 100%;
+  max-width: 600px;
   margin: auto;
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
+  gap: 15px;
 }
 
 h2,
-h3,
-.final-score {
-  margin: 0 auto;
-  color: var(--color-text);
+h3 {
+  text-align: center;
 }
 
+/* Product Image */
 .product-image {
   width: 100%;
-  max-width: 300px;
-  margin: 20px auto;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Nutri-Score Explanation */
-.nutriscore-explanation {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.nutriscore-explanation p {
-  font-size: 1rem;
-  color: #444;
+  max-width: 250px;
+  margin: auto;
+  border-radius: 10px;
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Nutri-Score Scale */
 .nutriscore-scale {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   font-weight: bold;
   margin-top: 10px;
 }
 
-.nutriscore-scale span {
-  padding: 5px 15px;
-  border-radius: 5px;
-  font-size: 1.2rem;
-}
-
 .score {
-  font-size: 1.2rem;
-  padding: 5px 15px;
-  border-radius: 5px;
+  padding: 8px 15px;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: transform 0.2s ease;
 }
 
+.score:hover {
+  transform: scale(1.1);
+}
+
+/* Nutri-Score Colors */
 .score-a {
   background: #008000;
-  color: #fff;
-} /* Green */
+  color: white;
+}
 .score-b {
   background: #80c000;
-  color: #fff;
-} /* Light Green */
+  color: white;
+}
 .score-c {
   background: #ffc000;
-  color: #fff;
-} /* Yellow */
+  color: white;
+}
 .score-d {
   background: #ff8000;
-  color: #fff;
-} /* Orange */
+  color: white;
+}
 .score-e {
   background: #e00000;
-  color: #fff;
-} /* Red */
-
-/* Nutri-Score Breakdown */
-.nutriscore-title {
-  font-size: 1.5rem;
-  text-align: center;
+  color: white;
 }
 
+/* Nutri-Score Table */
 .nutriscore-table {
   width: 100%;
   border-collapse: collapse;
-  margin: 20px 0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background: #fff;
+  margin: 15px 0;
   border-radius: 8px;
+  overflow: hidden;
+  background: white;
 }
 
 .nutriscore-table th,
 .nutriscore-table td {
-  padding: 12px;
+  padding: 10px;
   text-align: center;
   border-bottom: 1px solid #ddd;
 }
 
 .negative-row {
-  background-color: rgba(244, 67, 54, 0.1);
+  background: rgba(255, 77, 77, 0.1);
 }
 .positive-row {
-  background-color: rgba(76, 175, 80, 0.1);
+  background: rgba(77, 255, 77, 0.1);
 }
-
 .negative {
   color: red;
   font-weight: bold;
@@ -243,94 +229,42 @@ h3,
   font-weight: bold;
 }
 
+/* Final Score */
 .final-score {
+  text-align: center;
   font-size: 1.2rem;
   font-weight: bold;
-  margin-top: 20px;
-  text-align: center;
 }
 
 /* Learn More Section */
-.learn-more {
-  margin-top: 20px;
-  text-align: center;
-}
-
 .component-title {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   cursor: pointer;
   color: #007bff;
-  text-decoration: underline;
+  transition: color 0.2s;
+}
+.component-title:hover {
+  color: #0056b3;
 }
 
-.explanation {
-  background: #f4f4f4;
-  padding: 2rem;
-  border-radius: 5px;
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-
-  pre {
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    text-align: left;
-    font-size: 0.9rem;
-    background-color: #232323;
-    color: white;
-    padding: 2rem;
-    border-radius: 5px;
-  }
+/* Fade Animation */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease-in-out;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 
-/* Table Styling */
-.t-a-l {
-  text-align: left !important;
-}
-
-/* Responsive Styling */
+/* Responsive */
 @media (max-width: 768px) {
   .dashboard {
-    padding: 10px;
+    padding: 15px;
   }
-
-  .product-image {
-    max-width: 200px;
-  }
-
-  .nutriscore-explanation p {
-    font-size: 0.9rem;
-  }
-
-  .nutriscore-scale span {
-    padding: 5px 10px;
-    font-size: 1rem;
-  }
-
-  .nutriscore-title {
-    font-size: 1.2rem;
-  }
-
   .nutriscore-table th,
   .nutriscore-table td {
-    padding: 10px;
-  }
-
-  .final-score {
-    font-size: 1rem;
-  }
-
-  .component-title {
-    font-size: 1rem;
-  }
-
-  .explanation {
-    padding: 1rem;
-  }
-
-  pre {
-    font-size: 0.8rem;
+    padding: 8px;
   }
 }
 </style>
