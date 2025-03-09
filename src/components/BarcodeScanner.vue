@@ -1,21 +1,26 @@
 <template>
   <div class="barcode-scanner">
     <h2>Scan a Barcode</h2>
-    <div id="scanner-container">
-      <!-- Camera feed will be displayed here -->
-      <div class="scanner-container--crosshair"></div>
-    </div>
-    <p v-if="scannedCode">Scanned Code: {{ scannedCode }}</p>
 
-    <div class="buttons">
-      <button @click="startScanner">Start Scanner</button>
-      <button @click="stopScanner">Stop Scanner</button>
+    <div class="scanner-wrapper">
+      <div id="scanner-container">
+        <div class="crosshair"></div>
+      </div>
     </div>
 
-    <!-- Modal for displaying scanned product data -->
+    <p v-if="scannedCode" class="scanned-code">
+      Scanned Code: <strong>{{ scannedCode }}</strong>
+    </p>
+
+    <div class="button-group">
+      <button @click="startScanner" class="primary-button">Start Scanner</button>
+      <button @click="stopScanner" class="secondary-button">Stop Scanner</button>
+    </div>
+
+    <!-- Modal for scanned product data -->
     <div v-if="showModal" class="modal">
       <div class="modal-content">
-        <button @click="showModal = false" class="close-button">Close</button>
+        <button @click="showModal = false" class="close-button">×</button>
         <ProductDashboard :product="formattedProductData" :data="productData || {}" />
       </div>
     </div>
@@ -24,51 +29,46 @@
 
 <script lang="ts">
 import ProductDashboard from './ProductDashboard.vue'
-import Quagga from '@ericblade/quagga2' // Ensure you're using the maintained fork
+import Quagga from '@ericblade/quagga2'
 
 export default {
   components: { ProductDashboard },
   data() {
     return {
       scannedCode: null as string | null,
-      productData: null as Record<string, unknown> | null, // Store full product response
-      showModal: false, // Controls modal visibility
+      productData: null as Record<string, unknown> | null,
+      showModal: false,
     }
   },
   computed: {
     formattedProductData() {
-      if (!this.productData) {
-        return {
-          name: 'No data available',
-          ingredients: 'No data available',
-          nutriscore: {},
-          image: '',
-        }
-      }
-
-      return {
-        name: this.productData.product_name ?? 'No name available',
-        ingredients: this.productData.ingredients_text ?? 'No ingredients available',
-        nutriscore: this.productData.nutriscore_data ?? {},
-        image: this.productData.image_url ?? '',
-      }
+      return this.productData
+        ? {
+            name: this.productData.product_name ?? 'No name available',
+            ingredients: this.productData.ingredients_text ?? 'No ingredients available',
+            nutriscore: this.productData.nutriscore_data ?? {},
+            image: this.productData.image_url ?? '',
+          }
+        : {
+            name: 'No data available',
+            ingredients: 'No data available',
+            nutriscore: {},
+            image: '',
+          }
     },
   },
   methods: {
     startScanner() {
       console.log('Starting scanner...')
-
       Quagga.init(
         {
           inputStream: {
             type: 'LiveStream',
-            constraints: {
-              facingMode: 'environment', // Use the back camera
-            },
-            target: document.querySelector('#scanner-container') || undefined, // Camera feed container
+            constraints: { facingMode: 'environment' },
+            target: document.querySelector('#scanner-container') || undefined,
           },
           decoder: {
-            readers: ['ean_reader', 'upc_reader', 'code_128_reader'], // Supported barcode formats
+            readers: ['ean_reader', 'upc_reader', 'code_128_reader'],
           },
         },
         (err) => {
@@ -76,16 +76,20 @@ export default {
             console.error('Error initializing Quagga:', err)
             return
           }
-          console.log('Quagga initialized successfully!')
+          console.log('Scanner initialized')
           Quagga.start()
+          setTimeout(() => {
+            document.querySelectorAll('canvas').forEach((canvas) => canvas.remove())
+            document
+              .querySelectorAll('.crosshair')
+              .forEach((crosshair) => ((crosshair as HTMLElement).style.display = 'block'))
+          }, 10)
         },
       )
 
       Quagga.onDetected(async (result) => {
         this.scannedCode = result.codeResult.code
         this.stopScanner()
-
-        // Fetch product data
         try {
           const response = await fetch(
             `https://world.openfoodfacts.org/api/v2/product/${this.scannedCode}.json`,
@@ -95,7 +99,7 @@ export default {
 
           if (data.product) {
             this.productData = data.product
-            this.showModal = true // Show modal with product data
+            this.showModal = true
           } else {
             alert('Product not found')
           }
@@ -105,7 +109,6 @@ export default {
         }
       })
     },
-
     stopScanner() {
       console.log('Stopping scanner...')
       Quagga.stop()
@@ -114,20 +117,105 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+/* General Layout */
 .barcode-scanner {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 100vh;
+  gap: 15px;
+  padding: 20px;
+  background: var(--color-background);
+  text-align: center;
   width: 100%;
+}
 
-  & h2 {
-    color: var(--color-text);
+/* Scanner Container */
+.scanner-wrapper {
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+}
+
+#scanner-container {
+  width: 100%;
+  height: 300px;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & video {
+    width: 100%;
+    height: 100%;
+  }
+
+  & canvas {
+    display: none;
   }
 }
-/* Basic modal styling */
+
+canvas {
+  display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  opacity: 0 !important;
+}
+
+/* Scanner Crosshair */
+.crosshair {
+  width: 60%;
+  height: 40%;
+  border: 2px dashed red;
+  position: absolute;
+  display: none;
+}
+
+/* Scanned Code */
+.scanned-code {
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Buttons */
+.button-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+button {
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.primary-button {
+  background: #007bff;
+  color: white;
+}
+
+.primary-button:hover {
+  background: #0056b3;
+}
+
+.secondary-button {
+  background: #ff4d4d;
+  color: white;
+}
+
+.secondary-button:hover {
+  background: #cc0000;
+}
+
+/* Modal */
 .modal {
   position: fixed;
   top: 0;
@@ -142,80 +230,39 @@ export default {
 }
 
 .modal-content {
+  background: white;
   padding: 20px;
-  border-radius: 8px;
-  overflow-y: auto;
-  background: #fff;
+  border-radius: 12px;
   max-width: 90%;
   max-height: 90%;
-}
-
-pre {
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  text-align: left;
-}
-
-#scanner-container {
-  width: 100%;
-  height: 80vh;
-  border: 2px solid black;
+  overflow-y: auto;
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  & video {
-    width: 100%;
-    height: 100%;
-  }
-
-  & canvas {
-    display: none;
-  }
-
-  & .scanner-container--crosshair {
-    position: absolute;
-    width: 50%;
-    height: 30%;
-    border: 2px dashed red;
-    z-index: 100;
-  }
-}
-
-.buttons {
-  position: absolute;
-  top: 50px;
-  left: 70%;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-
-  & button {
-    margin: 0 10px;
-    padding: 10px 20px;
-    border: none;
-    background-color: #333;
-    color: #fff;
-    cursor: pointer;
-    border-radius: 5px;
-  }
 }
 
 .close-button {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 1.5rem;
   border: none;
+  background: none;
   cursor: pointer;
-  font-size: 1.2rem;
-  color: #333;
-  border: 1px solid #333;
-  background-color: #fff;
-  padding: 5px 10px;
-  border-radius: 5px;
-  transition: all 0.3s;
+}
 
-  &:hover {
-    background-color: #333;
-    color: #fff;
+.close-button:hover {
+  color: red;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .scanner-wrapper {
+    max-width: 100%;
+  }
+
+  .button-group {
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
   }
 }
 </style>
