@@ -19,9 +19,6 @@ export default {
   align-items: center;
   justify-content: center;
   height: 100%;
-  height: -moz-available; /* WebKit-based browsers will ignore this. */
-  height: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
-  height: fill-available;
   width: 100%;
   background: var(--color-background);
 }
