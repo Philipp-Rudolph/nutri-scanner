@@ -3,18 +3,18 @@
     <img :src="product.image" :alt="product.name" class="product-image" />
     <h2>{{ product.name }}</h2>
 
-    <!-- Nutri-Score Explanation Section -->
+    <!-- Nutri-Score Erklärung -->
     <div class="nutriscore-explanation">
-      <h3>What is the Nutri-Score?</h3>
+      <h3>Was ist der Nutri-Score?</h3>
       <p>
-        The Nutri-Score is a food rating system that classifies products from
-        <span class="score-a">A (Healthiest)</span> to
-        <span class="score-e">E (Least Healthy)</span>. It is based on nutrients to limit (sugar,
-        saturated fat, salt, calories) and nutrients to favor (fiber, protein, fruits, and
-        vegetables).
+        Der Nutri-Score ist ein Bewertungssystem, das Lebensmittel von
+        <span class="score-a">A (Gesündeste)</span> bis
+        <span class="score-e">E (Ungesündeste)</span> klassifiziert. Es basiert auf Nährstoffen, die
+        zu begrenzen sind (Zucker, gesättigte Fettsäuren, Salz, Kalorien) und Nährstoffen, die zu
+        bevorzugen sind (Ballaststoffe, Proteine, Obst und Gemüse).
       </p>
 
-      <!-- Visual Nutri-Score Scale -->
+      <!-- Visuelle Nutri-Score-Skala -->
       <div class="nutriscore-scale">
         <span class="score score-a">A</span>
         <span class="score score-b">B</span>
@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <!-- Nutri-Score Breakdown -->
+    <!-- Nutri-Score Bewertung -->
     <div class="nutriscore">
       <h3 class="nutriscore-title">
         Nutri-Score:
@@ -35,9 +35,9 @@
         <table class="nutriscore-table">
           <thead>
             <tr>
-              <th>Component</th>
-              <th>Value</th>
-              <th>Impact</th>
+              <th>Komponente</th>
+              <th>Wert</th>
+              <th>Auswirkung</th>
             </tr>
           </thead>
           <tbody>
@@ -48,7 +48,7 @@
             >
               <td>{{ neg.id }}</td>
               <td>{{ neg.value }}{{ neg.unit }}</td>
-              <td class="negative">-{{ neg.points }} points</td>
+              <td class="negative">-{{ neg.points }} Punkte</td>
             </tr>
             <tr
               v-for="pos in product.nutriscore.components.positive"
@@ -57,29 +57,33 @@
             >
               <td>{{ pos.id }}</td>
               <td>{{ pos.value !== null ? pos.value : 'N/A' }}{{ pos.unit }}</td>
-              <td class="positive">+{{ pos.points }} points</td>
+              <td class="positive">+{{ pos.points }} Punkte</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <p class="final-score"><strong>Final Score:</strong> {{ product.nutriscore.score }}</p>
+      <p class="final-score">
+        <strong>Endgültige Punktzahl:</strong> {{ product.nutriscore.score }}
+      </p>
 
-      <!-- Learn More Section -->
+      <!-- Mehr erfahren -->
       <div class="learn-more">
         <h3 class="component-title" @click="isExpanded = !isExpanded">
-          How is Nutri-Score Calculated?
+          Wie wird der Nutri-Score berechnet?
         </h3>
         <transition name="fade">
           <div v-if="isExpanded" class="explanation">
             <p>
-              The score is calculated based on negative and positive factors:
+              Die Punktzahl wird anhand negativer und positiver Faktoren berechnet:
               <br />
-              <strong>Negative:</strong> Sugars, Saturated Fat, Salt, Calories (higher is worse).
+              <strong>Negativ:</strong> Zucker, gesättigte Fettsäuren, Salz, Kalorien (höher ist
+              schlechter).
               <br />
-              <strong>Positive:</strong> Fiber, Protein, Fruits & Vegetables (higher is better).
+              <strong>Positiv:</strong> Ballaststoffe, Proteine, Obst & Gemüse (höher ist besser).
               <br />
-              A final score is computed, and the letter grade (A-E) is assigned accordingly.
+              Eine endgültige Punktzahl wird berechnet, und der Buchstabe (A-E) wird entsprechend
+              zugewiesen.
             </p>
             <pre><code>{{ JSON.stringify(data, null, 2) }}</code></pre>
           </div>

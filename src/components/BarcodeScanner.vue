@@ -137,9 +137,6 @@ export default {
   text-align: center;
   width: 100%;
   height: 100%;
-  height: -moz-available; /* WebKit-based browsers will ignore this. */
-  height: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
-  height: fill-available;
 }
 
 /* Scanner Container */
@@ -151,14 +148,15 @@ export default {
 
 #scanner-container {
   width: 100%;
-  height: 70dvh;
-  background: #000;
+  height: 50dvh;
   border-radius: 0;
   overflow: hidden;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 0.5px solid #ccc;
+  border-radius: 2rem;
 
   & video {
     width: 100%;
