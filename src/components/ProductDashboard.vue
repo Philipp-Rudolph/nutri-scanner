@@ -267,4 +267,17 @@ h3 {
     padding: 8px;
   }
 }
+
+.explanation {
+  & pre[data-v-ca160bc8] {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    text-align: left;
+    font-size: 0.9rem;
+    background-color: #232323;
+    color: white;
+    padding: 2rem;
+    border-radius: 5px;
+  }
+}
 </style>

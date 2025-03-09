@@ -138,14 +138,16 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
 
 .modal-content {
   padding: 20px;
   border-radius: 8px;
-  width: 90%;
-  max-height: 80%;
   overflow-y: auto;
+  background: #fff;
+  max-width: 90%;
+  max-height: 90%;
 }
 
 pre {
@@ -177,7 +179,7 @@ pre {
     width: 50%;
     height: 30%;
     border: 2px dashed red;
-    z-index: 999;
+    z-index: 100;
   }
 }
 
