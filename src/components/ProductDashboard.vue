@@ -216,7 +216,7 @@ h3 {
 .nutriscore-table th,
 .nutriscore-table td {
   padding: 10px;
-  text-align: center;
+  /* text-align: center; */
   border-bottom: 1px solid #ddd;
 }
 

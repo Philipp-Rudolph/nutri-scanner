@@ -1,6 +1,6 @@
 <template>
   <div class="barcode-scanner">
-    <h2>Scan a Barcode</h2>
+    <h2>Scanne einen Barcode</h2>
 
     <div class="scanner-wrapper">
       <div id="scanner-container">

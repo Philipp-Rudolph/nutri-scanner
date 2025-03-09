@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <h1>Vue Barcode Scanner</h1>
+    <h1>Nutri Score Scanner</h1>
     <BarcodeScanner />
   </div>
 </template>
