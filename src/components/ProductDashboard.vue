@@ -31,35 +31,37 @@
         <span :class="nutriScoreClass">{{ product.nutriscore.grade.toUpperCase() }}</span>
       </h3>
 
-      <table class="nutriscore-table">
-        <thead>
-          <tr>
-            <th>Component</th>
-            <th>Value</th>
-            <th>Impact</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="neg in product.nutriscore.components.negative"
-            :key="neg.id"
-            class="negative-row"
-          >
-            <td>{{ neg.id }}</td>
-            <td>{{ neg.value }}{{ neg.unit }}</td>
-            <td class="negative">-{{ neg.points }} points</td>
-          </tr>
-          <tr
-            v-for="pos in product.nutriscore.components.positive"
-            :key="pos.id"
-            class="positive-row"
-          >
-            <td>{{ pos.id }}</td>
-            <td>{{ pos.value !== null ? pos.value : 'N/A' }}{{ pos.unit }}</td>
-            <td class="positive">+{{ pos.points }} points</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="nutriscore-table-container">
+        <table class="nutriscore-table">
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Value</th>
+              <th>Impact</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="neg in product.nutriscore.components.negative"
+              :key="neg.id"
+              class="negative-row"
+            >
+              <td>{{ neg.id }}</td>
+              <td>{{ neg.value }}{{ neg.unit }}</td>
+              <td class="negative">-{{ neg.points }} points</td>
+            </tr>
+            <tr
+              v-for="pos in product.nutriscore.components.positive"
+              :key="pos.id"
+              class="positive-row"
+            >
+              <td>{{ pos.id }}</td>
+              <td>{{ pos.value !== null ? pos.value : 'N/A' }}{{ pos.unit }}</td>
+              <td class="positive">+{{ pos.points }} points</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <p class="final-score"><strong>Final Score:</strong> {{ product.nutriscore.score }}</p>
 
@@ -278,6 +280,32 @@ h3 {
     color: white;
     padding: 2rem;
     border-radius: 5px;
+  }
+}
+
+/* Responsive Table */
+.nutriscore-table-container {
+  overflow-x: auto;
+  width: 100%;
+  max-width: 100%;
+}
+
+.nutriscore-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 400px; /* Ensures horizontal scrolling on smaller screens */
+}
+
+.nutriscore-table th,
+.nutriscore-table td {
+  white-space: nowrap; /* Prevents text wrapping */
+}
+
+/* Mobile Optimization */
+@media (max-width: 768px) {
+  .nutriscore-table-container {
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   }
 }
 </style>
