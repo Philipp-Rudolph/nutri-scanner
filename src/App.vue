@@ -24,6 +24,5 @@ export default {
   height: fill-available;
   width: 100%;
   background: var(--color-background);
-  color: white;
 }
 </style>

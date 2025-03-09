@@ -130,21 +130,16 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   gap: 15px;
   padding: 20px;
   background: var(--color-background);
   text-align: center;
   width: 100%;
-}
-
-.barcode-scanner {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  background: #000; /* Full dark background */
-  color: #fff;
+  height: 100%;
+  height: -moz-available; /* WebKit-based browsers will ignore this. */
+  height: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+  height: fill-available;
 }
 
 /* Scanner Container */
