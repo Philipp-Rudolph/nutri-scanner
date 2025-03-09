@@ -151,7 +151,7 @@ export default {
 
 #scanner-container {
   width: 100%;
-  height: 70vh;
+  height: 70dvh;
   background: #000;
   border-radius: 0;
   overflow: hidden;
