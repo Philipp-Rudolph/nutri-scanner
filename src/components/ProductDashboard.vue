@@ -271,7 +271,7 @@ h3 {
 }
 
 .explanation {
-  & pre[data-v-ca160bc8] {
+  & pre {
     white-space: pre-wrap;
     word-wrap: break-word;
     text-align: left;
