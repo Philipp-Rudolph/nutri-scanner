@@ -25,12 +25,12 @@
     </div>
 
     <!-- Nutri-Score Bewertung -->
-    <div v-if="product.nutriscore.length" class="nutriscore">
+    <div v-if="product.nutriscore && Object.keys(product.nutriscore).length > 0" class="nutriscore">
       <div class="nutriscore">
         <h3 class="nutriscore-title">
           Nutri-Score:
           <span :class="nutriScoreClass">{{
-            product.nutriscore.grade ? product.nutriscore.grade.toUpperCase() : unknown
+            product.nutriscore.grade ? product.nutriscore.grade.toUpperCase() : 'unknown'
           }}</span>
         </h3>
       </div>
@@ -146,7 +146,7 @@ export default {
   },
   computed: {
     nutriScoreClass() {
-      if (this.product.nutriscore.length) {
+      if (Object.keys(this.product.nutriscore).length > 0) {
         switch (this.product.nutriscore.grade.toUpperCase()) {
           case 'A':
             return 'score score-a'
