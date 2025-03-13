@@ -257,11 +257,10 @@ button {
 .modal-content {
   background: white;
   padding: 20px;
-  border-radius: 12px;
-  max-width: 90%;
-  max-height: 90%;
   overflow-y: auto;
   position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .close-button {

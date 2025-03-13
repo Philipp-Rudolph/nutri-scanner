@@ -174,7 +174,6 @@ export default {
   background: #f9f9f9;
   color: #333;
   width: 100%;
-  max-width: 600px;
   margin: auto;
   padding: 20px;
   border-radius: 12px;
