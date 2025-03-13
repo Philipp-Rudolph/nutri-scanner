@@ -4,7 +4,7 @@
 
     <div class="scanner-wrapper">
       <div id="scanner-container">
-        <div class="crosshair"></div>
+        <div class="crosshair" ref="crosshair"></div>
       </div>
     </div>
 
@@ -80,10 +80,9 @@ export default {
           console.log('Scanner initialized')
           Quagga.start()
           setTimeout(() => {
+            const crosshair = this.$refs.crosshair as HTMLElement
+            crosshair.style.display = 'block'
             document.querySelectorAll('canvas').forEach((canvas) => canvas.remove())
-            document
-              .querySelectorAll('.crosshair')
-              .forEach((crosshair) => ((crosshair as HTMLElement).style.display = 'block'))
           }, 10)
         },
       )
@@ -100,6 +99,8 @@ export default {
       console.log('Stopping scanner...')
       Quagga.stop()
       this.scanning = false
+      const crosshair = this.$refs.crosshair as HTMLElement
+      crosshair.style.display = 'none'
     },
     async fetchProductData(code: string) {
       try {
@@ -153,32 +154,65 @@ export default {
   height: 100%;
 }
 
-/* Scanner Container */
+/* Scanner Wrapper */
 .scanner-wrapper {
   width: 100%;
   max-width: 400px;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
 }
 
+/* Scanner Container */
 #scanner-container {
   width: 100%;
   height: 50dvh;
-  border-radius: 0;
+  border-radius: 2rem;
   overflow: hidden;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 2rem;
+  transition: all 0.3s ease; /* Übergangseffekte für spätere Aktivierung */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
 
-  & video {
-    width: 100%;
-    height: 100%;
-  }
+/* Crosshair */
+#scanner-container .crosshair {
+  position: absolute;
+  width: 60%;
+  height: 20%;
+  border: 2px solid #00ffdd; /* Grauer Rand für das Crosshair */
+  /* border-radius: 50%; */
+  animation: pulse 1.5s infinite; /* Sanfte Pulsanimation */
+  border-radius: 10px;
+}
 
-  & canvas {
-    display: none;
+/* Animation für das Crosshair */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
   }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+}
+
+/* Video und Canvas */
+#scanner-container video {
+  display: none; /* Video vor Aktivierung unsichtbar */
+}
+
+#scanner-container canvas {
+  display: none; /* Canvas auch unsichtbar vor der Aktivierung */
 }
 
 canvas {
