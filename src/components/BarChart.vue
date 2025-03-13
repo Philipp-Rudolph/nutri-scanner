@@ -5,21 +5,38 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, watch } from 'vue'
-import { Chart, BarElement, CategoryScale, LinearScale, Title, Tooltip } from 'chart.js'
-
+import { defineComponent, ref, watch, nextTick } from 'vue'
+import {
+  Chart,
+  BarController,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Title,
+  Tooltip,
+  type ChartData,
+} from 'chart.js'
+Chart.register(BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip)
 Chart.register(BarElement, CategoryScale, LinearScale, Title, Tooltip)
 
 export default defineComponent({
   props: {
-    nutriments: Object, // Erwartet ein Objekt mit den Nährwerten
+    chartData: {
+      type: Object as () => ChartData, // 🎯 Typ für Chart-Objekt
+      required: true,
+    }, // Erwartet das formatierte Chart-Objekt
   },
   setup(props) {
     const chartCanvas = ref<HTMLCanvasElement | null>(null)
     let chartInstance: Chart | null = null
 
-    const createChart = () => {
-      if (!chartCanvas.value || !props.nutriments) return
+    const createChart = async () => {
+      await nextTick()
+      console.log('Creating chart with data:', chartCanvas.value)
+      if (!chartCanvas.value || !props.chartData || Object.keys(props.chartData).length === 0) {
+        console.warn('Chart-Daten fehlen oder sind leer:', props.chartData)
+        return
+      }
 
       if (chartInstance) {
         chartInstance.destroy()
@@ -27,41 +44,7 @@ export default defineComponent({
 
       chartInstance = new Chart(chartCanvas.value, {
         type: 'bar',
-        data: {
-          labels: [
-            'Energie (kcal)',
-            'Kohlenhydrate',
-            'Zucker',
-            'Fett',
-            'Proteine',
-            'Ballaststoffe',
-            'Salz',
-          ],
-          datasets: [
-            {
-              label: 'Nährwerte pro 100g',
-              data: [
-                props.nutriments['energy-kcal_100g'],
-                props.nutriments['carbohydrates_100g'],
-                props.nutriments['sugars_100g'],
-                props.nutriments['fat_100g'],
-                props.nutriments['proteins_100g'],
-                props.nutriments['fiber_100g'],
-                props.nutriments['salt_100g'],
-              ],
-              backgroundColor: [
-                '#ffcc00',
-                '#ff6666',
-                '#ff9999',
-                '#ffcc99',
-                '#99ccff',
-                '#99ff99',
-                '#cccccc',
-              ],
-              borderWidth: 1,
-            },
-          ],
-        },
+        data: props.chartData, // 🎯 Direkt das übergebene Chart-Objekt nutzen!
         options: {
           responsive: true,
           maintainAspectRatio: false,
@@ -81,8 +64,8 @@ export default defineComponent({
       })
     }
 
-    onMounted(createChart)
-    watch(() => props.nutriments, createChart, { deep: true })
+    // Erstelle das Chart, wenn sich `chartData` ändert
+    watch(() => props.chartData, createChart, { deep: true, immediate: true })
 
     return { chartCanvas }
   },

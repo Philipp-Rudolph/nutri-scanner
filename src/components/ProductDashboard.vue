@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard">
-    <img :src="product.image" :alt="product.name" class="product-image" />
     <h2>{{ product.name }}</h2>
+    <img :src="product.image" :alt="product.name" class="product-image" />
 
     <!-- Nutri-Score Erklärung -->
     <div class="nutriscore-explanation">
@@ -167,10 +167,11 @@ h3 {
 /* Product Image */
 .product-image {
   width: 100%;
-  max-width: 250px;
   margin: auto;
   border-radius: 10px;
   box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.2);
+  aspect-ratio: 4/3;
+  object-fit: contain;
 }
 
 /* Nutri-Score Scale */

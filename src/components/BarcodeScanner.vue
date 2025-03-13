@@ -15,6 +15,7 @@
     <div class="button-group">
       <button @click="startScanner" class="primary-button">Start Scanner</button>
       <button @click="stopScanner" class="secondary-button">Stop Scanner</button>
+      <button @click="simulateScan" class="dev-button">Dev Mode: Simulate Scan</button>
     </div>
 
     <div v-if="showModal" class="modal" :class="{ show: showModal }">
@@ -91,27 +92,8 @@ export default {
 
       Quagga.onDetected(async (result) => {
         this.scannedCode = result.codeResult.code
-        try {
-          const response = await fetch(
-            `https://world.openfoodfacts.org/api/v2/product/${this.scannedCode}.json`,
-          )
-          if (!response.ok) {
-            console.warn('No valid response, adjusting camera angle...')
-            return
-          }
-          const data = await response.json()
-          console.log('Product Info:', data)
-
-          if (data.product) {
-            this.productData = data.product
-            this.showModal = true
-            this.stopScanner()
-          } else {
-            alert('Product not found')
-          }
-        } catch (error) {
-          console.error('Error fetching product data:', error)
-          alert('Failed to fetch product data')
+        if (this.scannedCode) {
+          this.fetchProductData(this.scannedCode)
         }
       })
     },
@@ -119,6 +101,33 @@ export default {
       console.log('Stopping scanner...')
       Quagga.stop()
       this.scanning = false
+    },
+    async fetchProductData(code: string) {
+      try {
+        const response = await fetch(`https://world.openfoodfacts.org/api/v2/product/${code}.json`)
+        if (!response.ok) {
+          console.warn('No valid response, adjusting camera angle...')
+          return
+        }
+        const data = await response.json()
+        console.log('Product Info:', data)
+
+        if (data.product) {
+          this.productData = data.product
+          this.showModal = true
+          this.stopScanner()
+        } else {
+          alert('Product not found')
+        }
+      } catch (error) {
+        console.error('Error fetching product data:', error)
+        alert('Failed to fetch product data')
+      }
+    },
+    simulateScan() {
+      console.log('Simulating scan...')
+      this.scannedCode = '7394376616501'
+      this.fetchProductData(this.scannedCode)
     },
   },
 }

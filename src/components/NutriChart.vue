@@ -1,10 +1,8 @@
 <template>
   <div class="product-dashboard">
-    <div class="nutrients-chart">
-      <!-- <BarChart :data="chartData" /> -->
-    </div>
+    <h1>Nährwerte Tabelle</h1>
 
-    <table class="nutrition-table">
+    <table class="nutrition-table" @click="isExpanded = !isExpanded">
       <thead>
         <tr>
           <th>Nährstoff</th>
@@ -14,17 +12,22 @@
       </thead>
       <tbody>
         <tr v-for="(value, key) in displayedNutrients" :key="key">
-          <td>{{ nutrientLabels[key] || key }}</td>
+          <th>{{ nutrientLabels[key] || key }}</th>
           <td>{{ value.per100g }} {{ value.unit }}</td>
           <td>{{ value.perServing }} {{ value.unit }}</td>
         </tr>
       </tbody>
     </table>
   </div>
+
+  <div class="nutrients-chart">
+    <BarChart :chartData="chartData" />
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import BarChart from './BarChart.vue'
 
 export default defineComponent({
   props: {
@@ -34,6 +37,12 @@ export default defineComponent({
       required: true,
     },
   },
+  data() {
+    return {
+      isExpanded: false,
+    }
+  },
+  components: { BarChart },
   computed: {
     displayedNutrients(): { [key: string]: { per100g: number; perServing: number; unit: string } } {
       const keys = [
@@ -62,6 +71,9 @@ export default defineComponent({
       labels: string[]
       datasets: { label: string; data: number[]; backgroundColor: string }[]
     } {
+      console.log('displayedNutrients:', this.displayedNutrients)
+      console.log('nutrientLabels:', this.nutrientLabels)
+
       return {
         labels: Object.keys(this.displayedNutrients).map((key) => this.nutrientLabels[key] || key),
         datasets: [
@@ -112,5 +124,9 @@ export default defineComponent({
 }
 .nutrients-chart {
   margin: 20px 0;
+}
+
+th {
+  background: #c3c3c3;
 }
 </style>
