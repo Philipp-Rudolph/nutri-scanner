@@ -1,4 +1,5 @@
 <template>
+  <h2>Nährwerte Übersicht</h2>
   <div class="chart-container">
     <canvas ref="chartCanvas"></canvas>
   </div>
