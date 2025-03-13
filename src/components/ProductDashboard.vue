@@ -75,9 +75,8 @@
           <p>Die Punktzahl wird anhand negativer und positiver Faktoren berechnet:</p>
 
           <div class="score-grid">
-            <div class="score-item score-e">Zucker</div>
             <div class="score-item score-e">Gesättigte Fettsäuren</div>
-            <div class="score-item score-e">Salz</div>
+            <div class="score-item score-e">Salz & Zucker</div>
             <div class="score-item score-e">Kalorien (höher ist schlechter)</div>
             <div class="score-item score-a">Ballaststoffe</div>
             <div class="score-item score-a">Proteine</div>
