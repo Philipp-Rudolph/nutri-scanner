@@ -25,46 +25,57 @@
     </div>
 
     <!-- Nutri-Score Bewertung -->
-    <div class="nutriscore">
-      <h3 class="nutriscore-title">
-        Nutri-Score:
-        <span :class="nutriScoreClass">{{ product.nutriscore.grade.toUpperCase() }}</span>
-      </h3>
+    <div v-if="product.nutriscore.length" class="nutriscore">
+      <div class="nutriscore">
+        <h3 class="nutriscore-title">
+          Nutri-Score:
+          <span :class="nutriScoreClass">{{
+            product.nutriscore.grade ? product.nutriscore.grade.toUpperCase() : unknown
+          }}</span>
+        </h3>
+      </div>
+
+      <div class="nutriscore-table-container">
+        <table class="nutriscore-table">
+          <thead>
+            <tr>
+              <th>Komponente</th>
+              <th>Wert</th>
+              <th>Auswirkung</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="neg in product.nutriscore.components.negative"
+              :key="neg.id"
+              class="negative-row"
+            >
+              <td>{{ neg.id }}</td>
+              <td>{{ neg.value }}{{ neg.unit }}</td>
+              <td class="negative">-{{ neg.points }} Punkte</td>
+            </tr>
+            <tr
+              v-for="pos in product.nutriscore.components.positive"
+              :key="pos.id"
+              class="positive-row"
+            >
+              <td>{{ pos.id }}</td>
+              <td>{{ pos.value !== null ? pos.value : 'N/A' }}{{ pos.unit }}</td>
+              <td class="positive">+{{ pos.points }} Punkte</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="final-score">
+        <strong>Endgültige Punktzahl:</strong> {{ product.nutriscore.score }}
+      </p>
     </div>
 
-    <div class="nutriscore-table-container">
-      <table class="nutriscore-table">
-        <thead>
-          <tr>
-            <th>Komponente</th>
-            <th>Wert</th>
-            <th>Auswirkung</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="neg in product.nutriscore.components.negative"
-            :key="neg.id"
-            class="negative-row"
-          >
-            <td>{{ neg.id }}</td>
-            <td>{{ neg.value }}{{ neg.unit }}</td>
-            <td class="negative">-{{ neg.points }} Punkte</td>
-          </tr>
-          <tr
-            v-for="pos in product.nutriscore.components.positive"
-            :key="pos.id"
-            class="positive-row"
-          >
-            <td>{{ pos.id }}</td>
-            <td>{{ pos.value !== null ? pos.value : 'N/A' }}{{ pos.unit }}</td>
-            <td class="positive">+{{ pos.points }} Punkte</td>
-          </tr>
-        </tbody>
-      </table>
+    <div v-else>
+      Keine Nutri-Score Daten verfügbar für <strong>{{ product.name }}</strong>
     </div>
 
-    <p class="final-score"><strong>Endgültige Punktzahl:</strong> {{ product.nutriscore.score }}</p>
     <!-- Mehr erfahren -->
     <div class="learn-more">
       <h3 class="component-title" @click="isExpanded = !isExpanded">
@@ -135,20 +146,23 @@ export default {
   },
   computed: {
     nutriScoreClass() {
-      switch (this.product.nutriscore.grade.toUpperCase()) {
-        case 'A':
-          return 'score score-a'
-        case 'B':
-          return 'score score-b'
-        case 'C':
-          return 'score score-c'
-        case 'D':
-          return 'score score-d'
-        case 'E':
-          return 'score score-e'
-        default:
-          return ''
+      if (this.product.nutriscore.length) {
+        switch (this.product.nutriscore.grade.toUpperCase()) {
+          case 'A':
+            return 'score score-a'
+          case 'B':
+            return 'score score-b'
+          case 'C':
+            return 'score score-c'
+          case 'D':
+            return 'score score-d'
+          case 'E':
+            return 'score score-e'
+          default:
+            return ''
+        }
       }
+      return ''
     },
   },
 }
@@ -186,7 +200,6 @@ h3 {
   width: 100%;
   margin: auto;
   border-radius: 10px;
-  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.2);
   aspect-ratio: 4/3;
   object-fit: contain;
 }

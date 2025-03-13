@@ -123,7 +123,7 @@ export default {
     },
     simulateScan() {
       console.log('Simulating scan...')
-      this.scannedCode = '7394376616501'
+      this.scannedCode = '5000112548280'
       this.$router.push({ query: { code: this.scannedCode } })
       this.fetchProductData(this.scannedCode)
     },
