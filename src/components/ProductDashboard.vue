@@ -305,7 +305,6 @@ h3 {
   width: 100%;
   border-collapse: collapse;
   margin: 15px 0;
-  border-radius: 8px;
   overflow: hidden;
   background: white;
   color: black;
@@ -404,14 +403,6 @@ h3 {
 .nutriscore-table th,
 .nutriscore-table td {
   white-space: nowrap; /* Prevents text wrapping */
-}
-
-/* Mobile Optimization */
-@media (max-width: 768px) {
-  .nutriscore-table-container {
-    border-radius: 8px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-  }
 }
 
 .score-grid {
