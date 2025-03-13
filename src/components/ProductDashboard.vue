@@ -8,7 +8,7 @@
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          stroke="black"
+          stroke="currentColor"
           class="close-icon"
         >
           <path
@@ -432,7 +432,8 @@ h3 {
   background: none;
   cursor: pointer;
   width: 50px;
-  /* color: var(--color-text); */
+  color: var(--color-text);
+  z-index: 1001;
 }
 
 .close-button:hover {
