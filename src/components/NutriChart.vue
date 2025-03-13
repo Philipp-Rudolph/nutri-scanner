@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Nährwerte Tabelle</h1>
+    <h2>Nährwerte Tabelle</h2>
 
     <table class="nutrition-table" @click="isExpanded = !isExpanded">
       <thead>
