@@ -1,29 +1,14 @@
 <template>
   <div class="dashboard">
     <div class="dashboard-header">
-      <div class="spacer">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          class="close-icon"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
-      </div>
+      <div class="spacer"></div>
       <h2>{{ product.name }}</h2>
       <button @click="$emit('close')" class="close-button">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          stroke="currentColor"
+          stroke="black"
           class="close-icon"
         >
           <path
@@ -456,6 +441,5 @@ h3 {
 
 .spacer {
   width: 50px;
-  color: transparent;
 }
 </style>
