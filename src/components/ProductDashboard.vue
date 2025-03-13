@@ -8,10 +8,10 @@
       <h3>Was ist der Nutri-Score?</h3>
       <p>
         Der Nutri-Score ist ein Bewertungssystem, das Lebensmittel von
-        <span class="score-a">A (Gesündeste)</span> bis
-        <span class="score-e">E (Ungesündeste)</span> klassifiziert. Es basiert auf Nährstoffen, die
-        zu begrenzen sind (Zucker, gesättigte Fettsäuren, Salz, Kalorien) und Nährstoffen, die zu
-        bevorzugen sind (Ballaststoffe, Proteine, Obst und Gemüse).
+        <span class="score score-a">A</span> (Gesündeste) bis
+        <span class="score score-e">E</span> (Ungesündeste) klassifiziert. Es basiert auf
+        Nährstoffen, die zu begrenzen sind (Zucker, gesättigte Fettsäuren, Salz, Kalorien) und
+        Nährstoffen, die zu bevorzugen sind (Ballaststoffe, Proteine, Obst und Gemüse).
       </p>
 
       <!-- Visuelle Nutri-Score-Skala -->
@@ -90,10 +90,15 @@
         </div>
       </transition>
     </div>
+    <!-- <BarChart :nutriments="data.nutriments" /> -->
+    <NutriChart :product="product" :data="data" />
   </div>
 </template>
 
 <script lang="ts">
+import NutriChart from './NutriChart.vue'
+import BarChart from './BarChart.vue'
+
 export default {
   props: {
     product: {
@@ -105,6 +110,7 @@ export default {
       required: true,
     },
   },
+  components: { NutriChart, BarChart },
   data() {
     return {
       isExpanded: false,

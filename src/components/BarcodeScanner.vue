@@ -155,7 +155,6 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 0.5px solid #ccc;
   border-radius: 2rem;
 
   & video {
