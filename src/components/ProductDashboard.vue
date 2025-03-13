@@ -100,7 +100,6 @@
           </tbody>
         </table>
       </div>
-
       <p class="final-score">
         <strong>Endgültige Punktzahl:</strong> {{ product.nutriscore.score }}
       </p>
@@ -221,6 +220,13 @@ export default {
   }
 }
 
+@media screen and (min-width: 768px) {
+  .dashboard,
+  .dashboard-header {
+    max-width: 600px;
+  }
+}
+
 .dashboard-header {
   position: fixed;
   width: 100%;
@@ -332,6 +338,8 @@ h3 {
   text-align: center;
   font-size: 1.2rem;
   font-weight: bold;
+  border-top: 1px solid #ddd;
+  padding-top: 15px;
 }
 
 /* Learn More Section */
