@@ -25,13 +25,14 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import BarChart from './BarChart.vue'
 
 export default defineComponent({
-  components: { BarChart },
   props: {
     product: Object,
-    data: Object,
+    data: {
+      type: Object as () => Record<string, unknown> | null,
+      required: true,
+    },
   },
   computed: {
     displayedNutrients(): { [key: string]: { per100g: number; perServing: number; unit: string } } {
@@ -48,9 +49,9 @@ export default defineComponent({
       return keys.reduce(
         (acc: { [key: string]: { per100g: number; perServing: number; unit: string } }, key) => {
           acc[key] = {
-            per100g: this.data?.nutriments?.[`${key}_100g`] || 0,
-            perServing: this.data?.nutriments?.[`${key}_serving`] || 0,
-            unit: this.data?.nutriments?.[`${key}_unit`] || '',
+            per100g: (this.data?.nutriments as { [key: string]: number })?.[`${key}_100g`],
+            perServing: (this.data?.nutriments as { [key: string]: number })?.[`${key}_serving`],
+            unit: (this.data?.nutriments as { [key: string]: string })?.[`${key}_unit`],
           }
           return acc
         },
