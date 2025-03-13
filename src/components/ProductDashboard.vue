@@ -456,7 +456,7 @@ h3 {
   background: none;
   cursor: pointer;
   width: 50px;
-  color: var(--color-text);
+  /* color: var(--color-text); */
 }
 
 .close-button:hover {
