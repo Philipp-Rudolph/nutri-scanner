@@ -8,10 +8,6 @@
       </div>
     </div>
 
-    <p v-if="scannedCode" class="scanned-code">
-      Scanned Code: <strong>{{ scannedCode }}</strong>
-    </p>
-
     <div class="button-group">
       <button @click="startScanner" class="primary-button">Start Scanner</button>
       <button @click="stopScanner" class="secondary-button">Stop Scanner</button>
