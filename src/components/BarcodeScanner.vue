@@ -15,10 +15,12 @@
     </div>
 
     <div v-if="showModal" class="modal" :class="{ show: showModal }">
-      <div class="modal-content">
-        <button @click="closeModal" class="close-button">×</button>
-        <ProductDashboard :product="formattedProductData" :data="productData || {}" />
-      </div>
+      <ProductDashboard
+        class="modal-content"
+        :product="formattedProductData"
+        :data="productData || {}"
+        @close="closeModal"
+      />
     </div>
   </div>
 </template>
@@ -128,6 +130,7 @@ export default {
       this.fetchProductData(this.scannedCode)
     },
     closeModal() {
+      console.log('Closing modal...')
       this.showModal = false
       this.$router.push({ query: {} })
     },
@@ -255,26 +258,12 @@ button {
 }
 
 .modal-content {
-  background: white;
+  background: var(--color-background);
   padding: 20px;
   overflow-y: auto;
   position: relative;
   width: 100%;
   height: 100%;
-}
-
-.close-button {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 1.5rem;
-  border: none;
-  background: none;
-  cursor: pointer;
-}
-
-.close-button:hover {
-  color: red;
 }
 
 /* Responsive */

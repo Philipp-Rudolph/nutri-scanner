@@ -1,8 +1,42 @@
 <template>
   <div class="dashboard">
-    <h2>{{ product.name }}</h2>
-    <img :src="product.image" :alt="product.name" class="product-image" />
+    <div class="dashboard-header">
+      <div class="spacer">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          class="close-icon"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </div>
+      <h2>{{ product.name }}</h2>
+      <button @click="$emit('close')" class="close-button">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          class="close-icon"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+    </div>
 
+    <img :src="product.image" :alt="product.name" class="product-image" />
     <!-- Nutri-Score Erklärung -->
     <div class="nutriscore-explanation">
       <h3>Was ist der Nutri-Score?</h3>
@@ -171,8 +205,6 @@ export default {
 <style scoped>
 /* General Styling */
 .dashboard {
-  background: #f9f9f9;
-  color: #333;
   width: 100%;
   margin: auto;
   padding: 20px;
@@ -189,6 +221,22 @@ export default {
   }
 }
 
+.dashboard-header {
+  position: fixed;
+  width: 100%;
+  background: var(--color-background);
+  color: var(--color-text);
+  margin: -20px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 1rem;
+
+  margin-bottom: 1rem;
+}
+
 h2,
 h3 {
   text-align: center;
@@ -201,6 +249,7 @@ h3 {
   border-radius: 10px;
   aspect-ratio: 4/3;
   object-fit: contain;
+  margin-top: 5rem;
 }
 
 /* Nutri-Score Scale */
@@ -253,6 +302,7 @@ h3 {
   border-radius: 8px;
   overflow: hidden;
   background: white;
+  color: black;
 }
 
 .nutriscore-table th,
@@ -390,5 +440,23 @@ h3 {
 }
 .score-grid > div:nth-child(7) {
   order: 7;
+}
+
+.close-button {
+  font-size: 1.5rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  width: 50px;
+  color: var(--color-text);
+}
+
+.close-button:hover {
+  color: red;
+}
+
+.spacer {
+  width: 50px;
+  color: transparent;
 }
 </style>
