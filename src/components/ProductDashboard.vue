@@ -97,7 +97,6 @@
 
 <script lang="ts">
 import NutriChart from './NutriChart.vue'
-import BarChart from './BarChart.vue'
 
 export default {
   props: {
@@ -110,7 +109,7 @@ export default {
       required: true,
     },
   },
-  components: { NutriChart, BarChart },
+  components: { NutriChart },
   data() {
     return {
       isExpanded: false,
