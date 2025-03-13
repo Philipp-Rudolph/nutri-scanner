@@ -20,7 +20,7 @@
 
     <div v-if="showModal" class="modal" :class="{ show: showModal }">
       <div class="modal-content">
-        <button @click="showModal = false" class="close-button">×</button>
+        <button @click="closeModal" class="close-button">×</button>
         <ProductDashboard :product="formattedProductData" :data="productData || {}" />
       </div>
     </div>
@@ -92,6 +92,7 @@ export default {
 
       Quagga.onDetected(async (result) => {
         this.scannedCode = result.codeResult.code
+        this.$router.push({ query: { code: this.scannedCode } })
         if (this.scannedCode) {
           this.fetchProductData(this.scannedCode)
         }
@@ -127,7 +128,12 @@ export default {
     simulateScan() {
       console.log('Simulating scan...')
       this.scannedCode = '7394376616501'
+      this.$router.push({ query: { code: this.scannedCode } })
       this.fetchProductData(this.scannedCode)
+    },
+    closeModal() {
+      this.showModal = false
+      this.$router.push({ query: {} })
     },
   },
 }
