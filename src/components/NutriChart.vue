@@ -1,5 +1,5 @@
 <template>
-  <div class="product-dashboard">
+  <div>
     <h1>Nährwerte Tabelle</h1>
 
     <table class="nutrition-table" @click="isExpanded = !isExpanded">

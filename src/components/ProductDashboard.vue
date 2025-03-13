@@ -72,17 +72,35 @@
       </h3>
       <transition name="fade">
         <div v-if="isExpanded" class="explanation">
+          <p>Die Punktzahl wird anhand negativer und positiver Faktoren berechnet:</p>
+
+          <div class="score-grid">
+            <div class="score-item score-e">Zucker</div>
+            <div class="score-item score-e">Gesättigte Fettsäuren</div>
+            <div class="score-item score-e">Salz</div>
+            <div class="score-item score-e">Kalorien (höher ist schlechter)</div>
+            <div class="score-item score-a">Ballaststoffe</div>
+            <div class="score-item score-a">Proteine</div>
+            <div class="score-item score-a">Obst & Gemüse (höher ist besser)</div>
+          </div>
+
           <p>
-            Die Punktzahl wird anhand negativer und positiver Faktoren berechnet:
             <br />
-            <strong>Negativ:</strong> Zucker, gesättigte Fettsäuren, Salz, Kalorien (höher ist
-            schlechter).
-            <br />
-            <strong>Positiv:</strong> Ballaststoffe, Proteine, Obst & Gemüse (höher ist besser).
-            <br />
-            Eine endgültige Punktzahl wird berechnet, und der Buchstabe (A-E) wird entsprechend
-            zugewiesen.
+            Zur Berechnung der Gesamtpunktzahl werden die Punkte der günstigen Inhaltsstoffe von der
+            Punktezahl der ungünstigen abgezogen. Die Punktezahl ergibt dann den entsprechenden
+            Buchstaben in der Farbscala.
           </p>
+          <br />
+          <p>
+            <strong>Gesamtpunktzahl</strong> = Punkte für weniger erwünschte Inhaltsstoffe − Punkte
+            für erwünschte Inhaltsstoffe
+          </p>
+
+          <p>
+            <br />Hierbei gilt: Je geringer die Gesamtpunktezahl, umso höher ist die
+            Nährwertqualität des Lebensmittels
+          </p>
+          <br />
           <h3 @click="showRawData = !showRawData">
             JSON-Daten {{ showRawData ? 'einklappen' : 'anzeigen' }}
           </h3>
@@ -325,5 +343,41 @@ h3 {
     border-radius: 8px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   }
+}
+
+.score-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  padding: 10px;
+}
+
+.score-item {
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 8px;
+}
+
+.score-grid > div:nth-child(1) {
+  order: 3;
+}
+.score-grid > div:nth-child(2) {
+  order: 1;
+}
+.score-grid > div:nth-child(3) {
+  order: 5;
+}
+.score-grid > div:nth-child(4) {
+  order: 2;
+}
+.score-grid > div:nth-child(5) {
+  order: 4;
+}
+.score-grid > div:nth-child(6) {
+  order: 6;
+}
+.score-grid > div:nth-child(7) {
+  order: 7;
 }
 </style>
