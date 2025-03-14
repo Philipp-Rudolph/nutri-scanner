@@ -2,25 +2,22 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ['main']
   pull_request:
-    branches: [ "main" ]
+    branches: ['main']
 
 jobs:
-
   build-and-deploy:
-
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
-      
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my_wuis_kirby_docker:$(date +%s)
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-    - name: Trigger Deployment Webhook
-      run: | 
-        SECRET=${{ secrets.WEBHOOK_SECRET }}
-        curl -X POST -H "Authorization: Bearer $SECRET" http://193.41.237.94:10000/hooks/deploy
-    
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag my_wuis_kirby_docker:$(date +%s)
+
+      - name: Trigger Deployment Webhook
+        run: |
+          SECRET=${{ secrets.WEBHOOK_SECRET }}
+          curl -X POST -H "Authorization: $SECRET" http://193.41.237.94:10000/hooks/deploy
