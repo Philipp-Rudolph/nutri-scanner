@@ -1,7 +1,6 @@
 <template>
   <div class="home">
     <h1>Nutri Score Scanner</h1>
-    <p>by pr</p>
     <BarcodeScanner />
   </div>
 </template>
@@ -11,6 +10,8 @@ import BarcodeScanner from './components/BarcodeScanner.vue'
 export default {
   components: { BarcodeScanner },
 }
+
+console.log('Hello from App.vue')
 </script>
 
 <style>
