@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <h1>Nutri Score Scanner</h1>
+    <p>by pr</p>
     <BarcodeScanner />
   </div>
 </template>
