@@ -18,19 +18,19 @@ jobs:
       - name: Build the Docker image
         run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/vue-app:latest
 
-      # Schritt 2: Logge dich bei Docker Hub ein
+      # Schritt 2: Logge dich bei Docker Hub ein mit Personal Access Token
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          password: ${{ secrets.DOCKER_ACCESS_TOKEN }} # Verwende das Token hier
 
       # Schritt 3: Docker Image in die Registry pushen
       - name: Push Docker image to Docker Hub
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/vue-app:latest
 
-      # Schritt 4: Trigger Deployment Webhook (optional, wenn Docker Push erfolgreich war)
+      # Schritt 4: Trigger Deployment Webhook
       - name: Trigger Deployment Webhook
         run: |
           SECRET=${{ secrets.WEBHOOK_SECRET }}
