@@ -10,6 +10,8 @@ import BarcodeScanner from './components/BarcodeScanner.vue'
 export default {
   components: { BarcodeScanner },
 }
+
+console.log('Hello from App.vue')
 </script>
 
 <style>
