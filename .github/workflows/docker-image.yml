@@ -34,4 +34,4 @@ jobs:
       - name: Trigger Deployment Webhook
         run: |
           SECRET=${{ secrets.WEBHOOK_SECRET }}
-          curl -X POST -H "Authorization: $SECRET" http://193.41.237.94:10000/hooks/deploy
+          curl -X POST -H "Authorization: $SECRET" http://${{ secrets.VPS_IP_ADDRESS }}:${{ secrets.VPS_WEBHOOK_PORT }}/hooks/deploy
