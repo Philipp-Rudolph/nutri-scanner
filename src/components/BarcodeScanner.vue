@@ -1,5 +1,6 @@
 <template>
   <div class="barcode-scanner">
+    <h1>Nutri Score Scanner</h1>
     <h2>Scanne einen Barcode</h2>
 
     <div class="scanner-wrapper">
@@ -28,6 +29,7 @@
 <script lang="ts">
 import ProductDashboard from './ProductDashboard.vue'
 import Quagga from '@ericblade/quagga2'
+import type { Product, NutriScore } from '@/types/product'
 
 export default {
   components: { ProductDashboard },
@@ -40,20 +42,33 @@ export default {
     }
   },
   computed: {
-    formattedProductData() {
-      return this.productData
-        ? {
-            name: this.productData.product_name ?? 'No name available',
-            ingredients: this.productData.ingredients_text ?? 'No ingredients available',
-            nutriscore: this.productData.nutriscore_data ?? {},
-            image: this.productData.image_url ?? '',
-          }
-        : {
-            name: 'No data available',
-            ingredients: 'No data available',
-            nutriscore: {},
-            image: '',
-          }
+    formattedProductData(): Product {
+      if (!this.productData) {
+        return {
+          name: 'No data available',
+          ingredients: ['No data available'],
+          nutriscore: undefined,
+          image: '',
+        }
+      }
+
+      return {
+        name:
+          typeof this.productData.product_name === 'string'
+            ? this.productData.product_name
+            : 'No name available',
+        ingredients:
+          typeof this.productData.ingredients_text === 'string'
+            ? [this.productData.ingredients_text]
+            : ['No ingredients available'],
+        nutriscore:
+          this.productData.nutriscore_data &&
+          typeof this.productData.nutriscore_data === 'object' &&
+          'grade' in this.productData.nutriscore_data
+            ? (this.productData.nutriscore_data as NutriScore)
+            : undefined,
+        image: typeof this.productData.image_url === 'string' ? this.productData.image_url : '',
+      }
     },
   },
   methods: {
@@ -293,10 +308,9 @@ button {
 
 .modal-content {
   background: var(--color-background);
-  padding: 20px;
   overflow-y: auto;
   position: relative;
-  width: 100%;
+  width: 90%;
   height: 100%;
 }
 

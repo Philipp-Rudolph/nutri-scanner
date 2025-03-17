@@ -50,6 +50,29 @@
   }
 }
 
+/* Dark- und Light-Mode Farben */
+:root {
+  --header-bg: #007bff;
+  --header-text: white;
+  --border-color: #ddd;
+  --hover-bg: rgba(0, 123, 255, 0.1);
+  --row-alt-bg: #f9f9f9;
+  --text-color: #333;
+  --bg-color: white;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --header-bg: #0056b3;
+    --header-text: white;
+    --border-color: #444;
+    --hover-bg: rgba(0, 123, 255, 0.3);
+    --row-alt-bg: #222;
+    --text-color: white;
+    --bg-color: #121212;
+  }
+}
+
 *,
 *::before,
 *::after {

@@ -102,31 +102,52 @@ export default defineComponent({
 </script>
 
 <style>
-.product-dashboard {
-  max-width: 600px;
-  margin: auto;
-  text-align: center;
-}
-.product-image {
-  max-width: 100%;
-  height: auto;
-  margin-bottom: 20px;
-}
+/* Basis-Styling */
 .nutrition-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
-}
-.nutrition-table th,
-.nutrition-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-}
-.nutrients-chart {
-  margin: 20px 0;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
-th {
-  background: #c3c3c3;
+/* Tabellenkopf */
+.nutrition-table thead {
+  background-color: var(--header-bg);
+  color: var(--header-text);
+  font-weight: bold;
+
+  & th {
+    color: white;
+  }
+}
+
+.nutrition-table th {
+  padding: 12px;
+  text-align: left;
+  font-size: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Tabellenzellen */
+.nutrition-table td {
+  padding: 10px;
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.2s ease-in-out;
+}
+
+/* Hover-Effekt für Zeilen */
+.nutrition-table tbody tr:hover {
+  background-color: var(--hover-bg);
+}
+
+/* Alternierende Zeilenfarben */
+.nutrition-table tbody tr {
+  background-color: var(--row-alt-bg);
+}
+
+.nutrition-table th,
+.nutrition-table td {
+  color: var(--text-color);
 }
 </style>
