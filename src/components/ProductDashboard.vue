@@ -233,10 +233,14 @@ h3 {
   font-weight: bold;
   margin-top: 10px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, auto);
   gap: 10px;
   justify-content: center;
   margin: 10px 0;
+
+  @media screen and (min-width: 600px) {
+    grid-template-columns: repeat(3, auto);
+  }
 }
 
 .score-item {
@@ -247,6 +251,7 @@ h3 {
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
 }
 .score-item:hover {
   transform: scale(1.05);
